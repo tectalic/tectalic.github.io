@@ -97,6 +97,8 @@
 /**
  * Site footer
  */
+
+
 .site-footer {
     border-top: 1px solid $grey-color-light;
     padding: $spacing-unit 0;
@@ -225,10 +227,10 @@
     }
 
     h3 {
-        font-size: 26px;
+        font-size: 22px !important;
 
         @include media-query($on-laptop) {
-            font-size: 22px;
+            font-size: 20px !important;
         }
     }
 
