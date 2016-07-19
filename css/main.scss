@@ -81,6 +81,17 @@ a:hover{
   color:#03a4fb !important;
   text-decoration: none !important;
   border-bottom: 1px dotted #03a4fb;
+}
+
+h1, h2, h3, h4, h5, h6 {
+
+  &:before { 
+    display: block; 
+    content: " "; 
+    margin-top: -80px; 
+    height: 80px; 
+    visibility: hidden; 
+  }
 
 }
 
@@ -110,6 +121,7 @@ a:hover{
 }
 
 .post-content{
+  position: relative;
   font-size: 21px;
   text-align: justify;
   padding-bottom: 5em;
@@ -187,6 +199,29 @@ code {
 .navbar{
   box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.15);
 }
+
+// **********************************************
+// clickable page anchors as deeplinks
+// **********************************************
+
+.header-link {
+  position: absolute;
+  left: -0.5em;
+  opacity: 0;
+
+  \-webkit-transition: opacity 0.2s ease-in-out 0.1s;
+  \-moz-transition: opacity 0.2s ease-in-out 0.1s;
+  \-ms-transition: opacity 0.2s ease-in-out 0.1s;
+}
+
+h2:hover .header-link,
+h3:hover .header-link,
+h4:hover .header-link,
+h5:hover .header-link,
+h6:hover .header-link {
+  opacity: 1;
+}
+
 
 // Our variables
 $base-font-family: Helvetica, Arial, sans-serif;
