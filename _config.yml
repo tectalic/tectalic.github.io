@@ -18,6 +18,7 @@ google_analytics: UA-74316640-2
 
 # Build settings
 markdown: kramdown
+highlighter: rouge
 
 # exclude vendor folder to avoid error => https://github.com/jekyll/jekyll/issues/2938
 exclude: [vendor]
