@@ -37,15 +37,20 @@
 
 body{
   background-color: #022335 !important;
-  font-family: "Myriad Pro" !important;
+  font: 300 21px Lato !important;
   color: #abc0ca !important;
+}
+
+a {
+  transition: all 0.25s;
 }
 
 .page-stuff{
   a {
     color: #03a4fb !important;
     text-decoration: none;
-      &:hover{
+    
+    &:hover{
         color:#03a4fb !important;
         text-decoration: none !important;
         border-bottom: 1px dotted #03a4fb;
@@ -105,16 +110,22 @@ a:hover{
 }
 
 .post-content{
-  font-size: 14px;
+  font-size: 21px;
   text-align: justify;
   padding-bottom: 5em;
+  line-height: 1.5em;
+}
+
+.center-image {
+  margin: 40px auto;
+  display: block;
 }
 
 pre {
   background-color: black !important;
   border:none !important;
   border-radius: 0px !important;
-  font-size: 12px !important;
+  font-size: 18px !important;
   padding: 1.5em !important;
   color:white !important;
 }
@@ -127,6 +138,7 @@ h3 {
 
 .post-meta{
   color: skyblue !important;
+  float: right;
 }
 
 code {
