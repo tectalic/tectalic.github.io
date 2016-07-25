@@ -67,6 +67,29 @@ GrapeSwaggerRails.options.url      = '/swagger_doc.json'
 GrapeSwaggerRails.options.app_url  = 'http://swagger.yourhost.com'
 ```
 
+### Enabling Swagger UI within the rails asset pipeline
+	
+Add sprockets to `config/application.rb`.
+
+```ruby
+require 'sprockets/railtie'
+```
+
+Include JavaScript in `app/assets/javascripts/application.js`.
+
+```javascript
+//
+//= require_tree .
+```
+
+Include CSS stylesheets in `app/assets/stylesheets/application.css`.
+
+```css
+/*
+*= require_tree .
+*/
+```
+
 ### Conclusion
 
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
