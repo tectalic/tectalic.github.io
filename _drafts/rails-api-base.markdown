@@ -9,7 +9,7 @@ categories: rails
 
 ## Topic
 
-This post is about [Ruby on Rails Version 5](http://www.rubyonrails.org) used as an [API](https://en.wikipedia.org/wiki/Application_programming_interface). Ruby and especially Rails solve some of the lower level problems you're facing when developing server-side applications. We'll be implementing [Swagger using grape-swagger-rails](https://github.com/ruby-grape/grape-swagger-rails) as API documentation and using [Grape](https://github.com/ruby-grape) as [DSL](https://en.wikipedia.org/wiki/Domain-specific_language).
+This post is about [Ruby on Rails Version 5](http://www.rubyonrails.org) used as a simple [API](https://en.wikipedia.org/wiki/Application_programming_interface). Ruby and especially Rails solve some of the lower level problems you're facing when developing server-side applications. We'll be implementing [Swagger using grape-swagger-rails](https://github.com/ruby-grape/grape-swagger-rails) as API documentation and using [Grape](https://github.com/ruby-grape) as [DSL](https://en.wikipedia.org/wiki/Domain-specific_language).
 
 
 [comment]: <> (CONTENT #1-n)
@@ -58,8 +58,9 @@ The command generated a migration inside of `db/migrate/` and also a `app/models
 
 1. add `gem 'grape-swagger-rails'` to Gemfile
 2. `bundle`
-3. add `mount GrapeSwaggerRails::Engine => '/swagger'` to `./config/routes.rb`
-4. create `./config/initializers/swagger.rb` with the following contents:
+3. add `mount GrapeSwaggerRails::Engine => '/api-docs'` to `./config/routes.rb`
+4. if you want to hide your swagger-api in production you can use `unless Rails.env.production`
+5. create `./config/initializers/swagger.rb` with the following contents:
 
 ```ruby
 GrapeSwaggerRails.options.app_name = 'My Swagger API'
@@ -90,6 +91,86 @@ Include CSS stylesheets in `app/assets/stylesheets/application.css`.
 */
 ```
 
+### Your half way through!
+
+Starting Rails using `rails server` you can now open a browser on http://localhost:3000/swagger and see if everything is gone through alright.
+
+### Creating the API endpoints
+
+As we're starting of from scratch now we can be sure to be on Version 1 (or v1) of our API. So first we're going to create a folder under 
+
+1. create `app/api/v1` folder
+2. create `app/api/v1/api.rb` with the following content:
+
+```ruby
+require 'grape-swagger'
+
+module V1
+  class API < Grape::API
+    version 'v1'
+    format :json
+    prefix :api
+
+    before do
+      header 'Access-Control-Allow-Origin', '*'
+      header 'Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'
+    end
+
+    mount SessionApi
+
+    unless Rails.env.production?
+      add_swagger_documentation(
+        api_version: 'v1',
+        mount_path: '/',
+        hide_format: true,
+        add_base_path: true
+      )
+    end
+  end
+end
+```
+
+3. create `app/api/v1/people_api.rb` with the following content:
+
+```ruby
+module V1
+  class PeopleApi < Grape::API
+    desc 'create a Person'
+    
+    params do
+      requires :firstname, type: String, allow_blank: false, desc: 'Firstname of the user'
+      requires :lastname, type: String, allow_blank: false, desc: 'Lastname of the user'
+    end
+
+    post '/people', http_codes: [
+      [201, 'Create was successful'],
+      [404, 'Create was unsuccessful']
+    ] do
+      
+      person = Person.new(params);
+      if person.save        
+        status 201
+        person
+      else
+        status 404
+      end
+    end
+
+    desc 'A list of available people'
+
+    get '/list' do
+      Person.all
+    end
+
+  end
+end
+```
+
 ### Conclusion
 
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
+### Links & Resources
+
+[http://www.ruby-grape.org/](http://www.ruby-grape.org/)
