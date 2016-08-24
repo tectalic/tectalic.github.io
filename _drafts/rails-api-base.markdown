@@ -46,26 +46,34 @@ Exploring the Application you will see some major differences to default Rails p
 
 ### Creating a basic model to work with
 
-For the sake of simplicity but for a working example of an API we're generating a model. Type the following inside of your rails project to generate a `Person`-model. We will use this model to do simple interactions with our database.
+For the sake of simplicity but for a working example of an API we're generating a model. Type the following inside of your rails project to generate a `Post`-model. We will use this model to do simple interactions with our database.
 
 ```shell
-rails generate model Person firstname:string lastname:string
+rails generate model Post title:string body:text
+rails db:migrate
 ```
 
-The command generated a migration inside of `db/migrate/` and also a `app/models/Person.rb`. So we're good to go for our grape & swagger implementation.
+The first command generated a migration inside of `db/migrate/` and also a `app/models/Post.rb`. So we're good to go for our grape & swagger implementation. The second command used the generated migration to get the database on a state that we can work with.
 
 ### Integrating grape & grape-swagger-rails
 
-1. add `gem 'grape-swagger-rails'` to Gemfile
+1. add grape, grape-swagger and grape-swagger-rails to your Gemfile
+
+```ruby
+gem 'grape'
+gem 'grape-swagger'
+gem 'grape-swagger-rails'
+```
+
 2. `bundle`
 3. add `mount GrapeSwaggerRails::Engine => '/api-docs'` to `./config/routes.rb`
-4. if you want to hide your swagger-api in production you can use `unless Rails.env.production`
+4. if you want to hide your swagger api-docs in production you can use `unless Rails.env.production`
 5. create `./config/initializers/swagger.rb` with the following contents:
 
 ```ruby
 GrapeSwaggerRails.options.app_name = 'My Swagger API'
-GrapeSwaggerRails.options.url      = '/swagger_doc.json'
-GrapeSwaggerRails.options.app_url  = 'http://swagger.yourhost.com'
+GrapeSwaggerRails.options.url      = '/api/v1'
+GrapeSwaggerRails.options.app_url  = 'http://localhost:3000'
 ```
 
 ### Enabling Swagger UI within the rails asset pipeline
@@ -166,6 +174,8 @@ module V1
 end
 ```
 
+- add `mount V1::API => '/'`
+
 ### Conclusion
 
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -174,3 +184,4 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
 ### Links & Resources
 
 [http://www.ruby-grape.org/](http://www.ruby-grape.org/)
+[http://swagger.io/](http://swagger.io/)
